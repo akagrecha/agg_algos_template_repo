@@ -1,0 +1,6 @@
+name: TwoLayerMLP
+loss_fn_type: bce_logit
+params:
+  seed: 69420
+  hidden_size: 200
+  dropout_prob: 0.2

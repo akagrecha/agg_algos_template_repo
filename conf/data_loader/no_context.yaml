@@ -1,0 +1,4 @@
+name: NoContextData
+params:
+  data_dir: 'data/no_context'
+  eps: 1e-6

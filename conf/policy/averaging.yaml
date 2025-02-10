@@ -1,0 +1,5 @@
+name: Averaging
+# dim comes from data_gen
+params:
+  reg: 0.0
+  prior_mean: 0.5

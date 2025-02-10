@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "editable_proj"
+version = "0.1.0"
+description = "Editable project template"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Anmol Kagrecha", email = "anmolk@stanford.edu" }
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

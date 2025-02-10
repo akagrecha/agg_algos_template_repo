@@ -1,0 +1,16 @@
+defaults:
+  - data_loader: no_context
+  - mlp: two_layer_mlp
+  - policy: averaging
+  - override hydra/launcher: joblib
+  - _self_
+
+main:
+  use_wandb: False
+  num_splits: 5
+
+wandb:
+  entity: Null
+  project: editable_proj
+  tags: [sanity_checks]
+  name: ${policy.name}
