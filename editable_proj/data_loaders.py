@@ -10,8 +10,8 @@ class NoContextData:
 
     def get_data(self):
         df = pd.read_csv(self.data_dir/Path(f'data.csv'))
-        outcomes = df['outcomes'].values
-        df = df.drop(columns=['outcomes'])
+        outcomes = df['outcome'].values
+        df = df.drop(columns=['outcome'])
         # clip model preds to 1-eps and eps
         df = df.clip(lower=self.eps, upper=1 - self.eps)
         return df, outcomes

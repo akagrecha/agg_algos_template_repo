@@ -35,6 +35,7 @@ class SLAgg:
                  loss_fn_type: str='mse',
                  eval_interval: int=50,
                  print_stuff: bool=False,
+                 nan_replace: float=-1.0,
                  ) -> None:
         self.seed = seed
         self.mlp = mlp
@@ -48,6 +49,7 @@ class SLAgg:
         self.loss_fn_type = loss_fn_type
         self.eval_interval = eval_interval
         self.print_stuff = print_stuff
+        self.nan_replace = nan_replace
 
     def fit(self, 
             ests: torch.Tensor,
@@ -58,7 +60,6 @@ class SLAgg:
         # print("outcomes shape: ", outcomes.shape)
         train_dataset = ReplaceNanDataset(ests, outcomes)
         # print(train_dataset[0])
-        # breakpoint()
         if outcomes_val.dim() == 1:
             y=outcomes_val[:,None]
         inf_train_loader = InfIterator(seed=self.seed, 
@@ -82,10 +83,12 @@ class SLAgg:
         return stats_dict
 
     def predict(self, x: torch.Tensor, concat_mask: bool=True):
-        # unmask only input_ids
         if concat_mask:
-            mask = torch.ones(x.shape[0], self.dim)
-            x = torch.cat([x, mask], dim=1)
+            mask = (~torch.isnan(x)).float()
+            # Replace NaNs with nan_replace
+            x = torch.nan_to_num(x, nan=self.nan_replace)
+            # Concatenate the feature vector with the mask
+            x = torch.cat((x, mask), dim=1)
         with torch.no_grad():
             preds = self.mlp(x)
         return preds

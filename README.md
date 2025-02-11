@@ -13,4 +13,5 @@ These will create a env with name `editable_proj`. To change the name, edit the 
 1. Run `pytest` in the root directory of the project. This will run all the tests in the `tests` directory.
 
 ### Running code without wandb
-python main.py policy=averaging
+python main.py main.use_wandb=False policy=averaging policy.params.reg=0.1
+python main.py policy=sl_agg main.use_wandb=False mlp.params.hidden_size=10

@@ -11,4 +11,3 @@ params:
   # loss_fn_type: will come from mlp
   eval_interval: 50
   print_stuff: False
-  train_with_masking: False

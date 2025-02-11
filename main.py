@@ -71,10 +71,17 @@ def eval_policy(cfg, policy, ests_val, outcomes_val):
             outputs_val = outputs_val[:,None]
         if cfg.mlp.loss_fn_type == "bce_logit":
             outputs_val = torch.log(outputs_val/(1-outputs_val))
+    # check outputs_val has no nan
+    try:
+        assert not torch.isnan(outputs_val).any()
+    except AssertionError:
+        ids = torch.isnan(outputs_val)
+        print(f"nan values in outputs_val: {outputs_val[ids]}")
+        print(f"nan values in ests_val: {ests_val[ids]}")
+        raise
+
     if outcomes_val.dim() == 1:
         outcomes_val = outcomes_val[:,None]
-    # print(outputs_test.shape, oos_ests_test.shape)
-    # breakpoint()
     loss = criterion(outputs_val, outcomes_val)
     return loss.item()
 
@@ -93,6 +100,7 @@ def main(cfg):
     num_splits = cfg.main.num_splits
 
     for split in range(num_splits):
+        print(f"Split {split}")
         data = get_cv_split(cfg, split, num_splits=num_splits)
         ests_train, ests_val = data['ests_train'], data['ests_val']
         outcomes_train, outcomes_val = data['outcomes_train'], data['outcomes_val']
