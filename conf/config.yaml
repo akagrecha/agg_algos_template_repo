@@ -11,6 +11,6 @@ main:
 
 wandb:
   entity: Null
-  project: editable_proj
+  project: Null
   tags: [sanity_checks]
   name: ${policy.name}
